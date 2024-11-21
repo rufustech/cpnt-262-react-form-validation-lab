@@ -1,36 +1,56 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Lab Instructions for React form validation
 
-## Getting Started
+## Implement State for Form Fields
 
-First, run the development server:
+Use useState to manage the values of:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- username
+- password
+- confirmPassword
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Write validation functions or inline logic for
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+- Username: Must be at least 3 characters.
+- Password: Must be at least 8 characters.
+- Confirm Password: Must match the password field.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Display Error Messages
 
-## Learn More
+- Create state variables for each field's error message (e.g., usernameError, passwordError).
+- Use conditional rendering to display the appropriate error message under each field.
 
-To learn more about Next.js, take a look at the following resources:
+## Disable the Submit Button
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- Use the disabled attribute on the submit button.
+- Ensure the button is disabled if any field is invalid.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Handle Form Submission
 
-## Deploy on Vercel
+- Prevent the default form submission behavior.
+- Log the user data to the console or display it on the page for testing.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Extras
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Add Email Field
+
+- Use a regular expression to validate that the email address is correctly formatted.
+- Display an error message if the email is invalid.
+
+### Enhance Styling:
+
+- Add visual cues for valid/invalid fields, such as green or red borders.
+- Use animations or transitions for a polished user experience.
+
+## Deliverables
+
+A fully functional registration form with the following features:
+
+- Real-time validation.
+- Submit button disabled until all fields are valid.
+- Dynamically displayed results section showing valid form data after submission.
+- Responsive and styled using Tailwind CSS.
+
+## Submission Instructions
+
+- Submit the project code via a GitHub repository.
+- Not compulsory - Deploy the react/nextjs app using vercel.
