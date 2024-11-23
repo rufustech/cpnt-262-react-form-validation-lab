@@ -4,21 +4,35 @@ import { useState } from 'react';
 
 export default function RegistrationForm() {
   // Add state for username and usernameErrorText
+  const [username, setUsername] = useState('');
+  const [usernameErrorText, setUserNameErrorText] = useState('');
 
   // Add state for password and passwordErrortext
+  const [password, setPassword] = useState('');
+  const [passwordErrortext, setpasswordErrortext] = useState('');
 
-  // Add state for confirmPassword and confirmPasswordErrorText
-
+  // Add state for confirmPassword and confirmPasswordErrorText, setconfirmPassword
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [confirmPasswordErrorText, setConfirmPasswordErrorText] = useState('');
   // Extra - add state for email and emailErrorText
+  const [email, setEmail] = useState('');
+  const [emailErrorText, setEmailErrorText] = useState('');
 
   // Add state for isFormValid
+  const [isFormValid, setIsFormValid] = useState(false);
 
   // Add state to set formData
   const [formData, setFormData] = useState(null); // For storing and displaying results
 
   // Add function to validateForm
+  function validateForm(event) {}
 
   // Add function to validate username
+  function handleUsername(event) {
+    event.preventDefault();
+
+    setUsername('');
+  }
 
   // Add function to validate password
 
@@ -44,7 +58,9 @@ export default function RegistrationForm() {
           <h1 className="text-2xl font-bold text-blue-500 mb-6 text-center">
             Registration Form
           </h1>
-          <form className="space-y-4">
+          <form className="space-y-4" onSubmit={(e =>{
+            
+          })}>
             <div>
               <label htmlFor="username" className="block font-semibold mb-2">
                 Username:
@@ -52,8 +68,25 @@ export default function RegistrationForm() {
               <input
                 type="text"
                 id="username"
+                value={username}
                 className="w-full p-2 bg-gray-900 text-white border border-gray-700 rounded focus:outline-none focus:ring focus:ring-blue-500"
+                onChange={(e) => {
+                  const newValue = e.target.value;
+                  setUsername(newValue);
+                  if (newValue.length === 0) {
+                    setUserNameErrorText('name is required');
+                  } else if (newValue.length > 0 && newValue.length < 5) {
+                    setUserNameErrorText(
+                      'Name must be greater than or equla; to 5 chars'
+                    );
+                  } else {
+                    setUserNameErrorText('');
+                  }
+                }}
               />
+              {usernameErrorText && (
+                <small className="text-red-600">{usernameErrorText}</small>
+              )}
               <p className="text-red-500 text-sm mt-2"></p>
             </div>
 
@@ -64,8 +97,25 @@ export default function RegistrationForm() {
               <input
                 type="password"
                 id="password"
+                value={password}
                 className="w-full p-2 bg-gray-900 text-white border border-gray-700 rounded focus:outline-none focus:ring focus:ring-blue-500"
+                onChange={(e) => {
+                  const newValue = e.target.value;
+                  setPassword(newValue);
+                  if (newValue.length === 0) {
+                    setpasswordErrortext('password is required');
+                  } else if (newValue.length < 8) {
+                    setpasswordErrortext(
+                      'Name must have at 8 characters or more'
+                    );
+                  } else {
+                    setpasswordErrortext('');
+                  }
+                }}
               />
+              {passwordErrortext && (
+                <small className="text-red-600">{passwordErrortext}</small>
+              )}
               <p className="text-red-500 text-sm mt-2"></p>
             </div>
 
@@ -79,8 +129,30 @@ export default function RegistrationForm() {
               <input
                 type="password"
                 id="confirmPassword"
+                value={confirmPassword}
                 className="w-full p-2 bg-gray-900 text-white border border-gray-700 rounded focus:outline-none focus:ring focus:ring-blue-500"
+                onChange={(e) => {
+                  const newValue = e.target.value;
+                  console.log(newValue);
+                  console.log(password);
+                  setConfirmPassword(newValue);
+
+                  if (newValue.length < 8) {
+                    setConfirmPasswordErrorText(
+                      'Name must have at 8 characters or more'
+                    );
+                  } else if (newValue !== password) {
+                    setConfirmPasswordErrorText('passwords must match');
+                  } else {
+                    setConfirmPasswordErrorText('');
+                  }
+                }}
               />
+              {confirmPasswordErrorText && (
+                <small className="text-red-600">
+                  {confirmPasswordErrorText}
+                </small>
+              )}
               <p className="text-red-500 text-sm mt-2"></p>
             </div>
 
@@ -91,7 +163,13 @@ export default function RegistrationForm() {
               <input
                 type="email"
                 id="email"
+                value={email}
                 className="w-full p-2 bg-gray-900 text-white border border-gray-700 rounded focus:outline-none focus:ring focus:ring-blue-500"
+                onChange={(e) => {
+                  const newValue = e.target.value;
+                  setEmail(newValue);
+                  console.log(newValue);
+                }}
               />
               <p className="text-red-500 text-sm mt-2"></p>
             </div>
