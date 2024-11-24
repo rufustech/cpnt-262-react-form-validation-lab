@@ -1,54 +1,50 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export default function RegistrationForm() {
-  // Add state for username and usernameErrorText
   const [username, setUsername] = useState('');
   const [usernameErrorText, setUserNameErrorText] = useState('');
 
-  // Add state for password and passwordErrortext
   const [password, setPassword] = useState('');
   const [passwordErrortext, setpasswordErrortext] = useState('');
 
-  // Add state for confirmPassword and confirmPasswordErrorText, setconfirmPassword
   const [confirmPassword, setConfirmPassword] = useState('');
   const [confirmPasswordErrorText, setConfirmPasswordErrorText] = useState('');
-  // Extra - add state for email and emailErrorText
+
   const [email, setEmail] = useState('');
   const [emailErrorText, setEmailErrorText] = useState('');
 
-  // Add state for isFormValid
   const [isFormValid, setIsFormValid] = useState(false);
 
-  // Add state to set formData
-  const [formData, setFormData] = useState(null); // For storing and displaying results
+  const [formData, setFormData] = useState(null);
 
-  // Add function to validateForm
-  function validateForm(event) {}
+  // Use effect tio validate the entire form
+  useEffect(() => {
+    const isUsernameValid = username.length >= 5;
+    const isPasswordValid = password.length >= 8;
+    const isConfirmPasswordValid =
+      confirmPassword === password && confirmPassword.length >= 8;
+    const isEmailValid =
+      email !== '' || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
-  // Add function to validate username
-  function handleUsername(event) {
-    event.preventDefault();
+    setIsFormValid(
+      isUsernameValid &&
+        isPasswordValid &&
+        isConfirmPasswordValid &&
+        isEmailValid
+    );
+  }, [username, password, confirmPassword, email]);
 
-    setUsername('');
-  }
-
-  // Add function to validate password
-
-  // Add function to validate confirm password
-
-  // Extra add function to validate email
-
-  // Add function to handle username change
-
-  // Add function to handle password change
-
-  // Add function to handle confirm password change
-
-  // Extra - Add function to handle email value change
-
-  // Create a handleSubmitFunction
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (isFormValid) {
+      setFormData({ username, email });
+      alert('Registration successful!');
+    } else {
+      alert('Please fix the errors before submitting.');
+    }
+  };
 
   return (
     <div className="bg-black text-white min-h-screen flex justify-center items-center p-4">
@@ -58,9 +54,8 @@ export default function RegistrationForm() {
           <h1 className="text-2xl font-bold text-blue-500 mb-6 text-center">
             Registration Form
           </h1>
-          <form className="space-y-4" onSubmit={(e =>{
-            
-          })}>
+          <form className="space-y-4" onSubmit={handleSubmit}>
+            {/* Username */}
             <div>
               <label htmlFor="username" className="block font-semibold mb-2">
                 Username:
@@ -74,11 +69,9 @@ export default function RegistrationForm() {
                   const newValue = e.target.value;
                   setUsername(newValue);
                   if (newValue.length === 0) {
-                    setUserNameErrorText('name is required');
-                  } else if (newValue.length > 0 && newValue.length < 5) {
-                    setUserNameErrorText(
-                      'Name must be greater than or equla; to 5 chars'
-                    );
+                    setUserNameErrorText('Name is required');
+                  } else if (newValue.length < 5) {
+                    setUserNameErrorText('Name must be at least 5 characters');
                   } else {
                     setUserNameErrorText('');
                   }
@@ -87,9 +80,9 @@ export default function RegistrationForm() {
               {usernameErrorText && (
                 <small className="text-red-600">{usernameErrorText}</small>
               )}
-              <p className="text-red-500 text-sm mt-2"></p>
             </div>
 
+            {/* Password */}
             <div>
               <label htmlFor="password" className="block font-semibold mb-2">
                 Password:
@@ -103,10 +96,10 @@ export default function RegistrationForm() {
                   const newValue = e.target.value;
                   setPassword(newValue);
                   if (newValue.length === 0) {
-                    setpasswordErrortext('password is required');
+                    setpasswordErrortext('Password is required');
                   } else if (newValue.length < 8) {
                     setpasswordErrortext(
-                      'Name must have at 8 characters or more'
+                      'Password must be at least 8 characters'
                     );
                   } else {
                     setpasswordErrortext('');
@@ -116,9 +109,9 @@ export default function RegistrationForm() {
               {passwordErrortext && (
                 <small className="text-red-600">{passwordErrortext}</small>
               )}
-              <p className="text-red-500 text-sm mt-2"></p>
             </div>
 
+            {/* Confirm Password */}
             <div>
               <label
                 htmlFor="confirmPassword"
@@ -133,16 +126,15 @@ export default function RegistrationForm() {
                 className="w-full p-2 bg-gray-900 text-white border border-gray-700 rounded focus:outline-none focus:ring focus:ring-blue-500"
                 onChange={(e) => {
                   const newValue = e.target.value;
-                  console.log(newValue);
-                  console.log(password);
                   setConfirmPassword(newValue);
-
-                  if (newValue.length < 8) {
+                  if (newValue.length === 0) {
+                    setConfirmPasswordErrorText('Confirmation is required');
+                  } else if (newValue.length > 0 && newValue.length < 8) {
                     setConfirmPasswordErrorText(
-                      'Name must have at 8 characters or more'
+                      'Password must be at least 8 characters'
                     );
                   } else if (newValue !== password) {
-                    setConfirmPasswordErrorText('passwords must match');
+                    setConfirmPasswordErrorText('Passwords must match');
                   } else {
                     setConfirmPasswordErrorText('');
                   }
@@ -153,12 +145,12 @@ export default function RegistrationForm() {
                   {confirmPasswordErrorText}
                 </small>
               )}
-              <p className="text-red-500 text-sm mt-2"></p>
             </div>
 
+            {/* Email */}
             <div>
               <label htmlFor="email" className="block font-semibold mb-2">
-                Email (Optional):
+                Email (Required):
               </label>
               <input
                 type="email"
@@ -168,15 +160,32 @@ export default function RegistrationForm() {
                 onChange={(e) => {
                   const newValue = e.target.value;
                   setEmail(newValue);
-                  console.log(newValue);
+                  if (newValue.length === 0) {
+                    setEmailErrorText('Email is Mandatory');
+                  } else if (
+                    newValue &&
+                    !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(newValue)
+                  ) {
+                    setEmailErrorText('Invalid email format');
+                  } else {
+                    setEmailErrorText('');
+                  }
                 }}
               />
-              <p className="text-red-500 text-sm mt-2"></p>
+              {emailErrorText && (
+                <small className="text-red-600">{emailErrorText}</small>
+              )}
             </div>
 
+            {/* used ternary opetaror to toggle button states */}
             <button
               type="submit"
-              className={`w-full py-2 rounded bg-gray-600 text-gray-400 cursor-not-allowed`}
+              className={`w-full py-2 rounded ${
+                isFormValid
+                  ? 'bg-orange-600 text-white text-xl font-bold hover:scale-105 cursor-pointer'
+                  : 'bg-gray-600 text-gray-400 cursor-not-allowed'
+              }`}
+              disabled={!isFormValid}
             >
               Register
             </button>
@@ -189,13 +198,13 @@ export default function RegistrationForm() {
             Registration Results
           </h2>
           {formData ? (
-            <div>
+            <div className="text-gray-400">
               <p className="mb-2">
-                <span className="font-semibold">Username:</span>
+                <span className="font-semibold">Username:</span>{' '}
                 {formData.username}
               </p>
               <p>
-                <span className="font-semibold">Email:</span>
+                <span className="font-semibold">Email:</span>{' '}
                 {formData.email || 'N/A'}
               </p>
             </div>
